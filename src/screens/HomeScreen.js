@@ -1,28 +1,36 @@
-import { Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Images from '../contants/Images';
 import Dimension from '../contants/Dimension';
 import Slide from '../components/Carousel';
 import Colors from '../contants/Colors';
-import { RoundBtn } from '../components/AllBtn';
-import { HStack, Spinner } from 'native-base';
-import { getFormattedDate, getVietnameseDayOfWeek } from '../utils/dateTimeFunc';
-import { shadowIOS } from '../contants/propsIOS';
-import { getWeatherData } from '../redux/apiRequest';
-import { requestPermissions } from '../utils/permissionFunc';
-import { fontDefault } from '../contants/Variable';
-import Fonts from '../contants/Fonts'
+import {RoundBtn} from '../components/AllBtn';
+import {HStack, Spinner} from 'native-base';
+import {getFormattedDate, getVietnameseDayOfWeek} from '../utils/dateTimeFunc';
+import {shadowIOS} from '../contants/propsIOS';
+import {getWeatherData} from '../redux/apiRequest';
+import {requestPermissions} from '../utils/permissionFunc';
+import {fontDefault} from '../contants/Variable';
+import Fonts from '../contants/Fonts';
 const defaultW = wp('100%');
 const defaultH = hp('60%');
 
 const data = [Images.img1, Images.img2, Images.img3, Images.img4];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const [weather, setWeather] = useState(null);
   const weekdays = getVietnameseDayOfWeek();
   const date = getFormattedDate();
@@ -36,13 +44,13 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetchImportantData();
   }, []);
 
   const handleClickNavigate = (routerName, title) => {
-    navigation.navigate(routerName, { title: title })
-  }
+    navigation.navigate(routerName, {title: title});
+  };
 
   return (
     <View
@@ -58,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
       <ImageBackground
         resizeMode="cover"
         source={Images.bg}
-        style={{ width: defaultW, height: defaultH, marginBottom: hp('4%') }}>
+        style={{width: defaultW, height: defaultH, marginBottom: hp('4%')}}>
         <View style={styles.appInforContainer}>
           <View>
             <Text style={styles.appNameText}>Gia Lai FFW</Text>
@@ -66,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <Image source={Images.logo} style={styles.logoImg} />
         </View>
-        <Slide data={data} stylesContain={{ marginVertical: hp('4%') }} />
+        <Slide data={data} />
         <View style={styles.btnContainer}>
           <View>
             <RoundBtn
@@ -75,7 +83,9 @@ const HomeScreen = ({ navigation }) => {
               iconSize={40}
               pd={10}
               bdRadius={10}
-              event={() => handleClickNavigate('ListFireLevel', 'Danh sách cấp cháy huyện')}
+              event={() =>
+                handleClickNavigate('ListFireLevel', 'Danh sách cấp cháy huyện')
+              }
             />
             <Text style={styles.btnText}>Cấp cháy</Text>
           </View>
@@ -113,10 +123,7 @@ const HomeScreen = ({ navigation }) => {
       </ImageBackground>
       <View style={styles.containerWeather}>
         <Text style={styles.textWeather}>Thời tiết</Text>
-        <View
-          style={[
-            styles.todayInforContainer,
-          ]}>
+        <View style={[styles.todayInforContainer]}>
           <View style={styles.calendarContainer}>
             <Image source={Images.calendar} style={styles.calendarImg} />
             <View
@@ -130,7 +137,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.weatherContainer}>
-            <Image source={{ uri: weather?.iconUrl }} style={styles.weatherImg} />
+            <Image source={{uri: weather?.iconUrl}} style={styles.weatherImg} />
             <View
               style={{
                 justifyContent: 'center',
@@ -169,7 +176,7 @@ const styles = StyleSheet.create({
   logoImg: {
     width: wp('15%'),
     height: wp('15%'),
-    borderRadius: 50
+    borderRadius: 50,
   },
   appNameText: {
     fontSize: Dimension.fontSize(23),
@@ -186,12 +193,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: Dimension.setWidth(5),
-    marginVertical: hp('5%')
+    marginVertical: hp('5%'),
   },
   btnText: {
     marginTop: hp('1%'),
     ...fontDefault,
-    fontFamily: Fonts.RB_REGULAR
+    fontFamily: Fonts.RB_REGULAR,
   },
   containerWeather: {
     marginHorizontal: Dimension.setWidth(5),
@@ -228,7 +235,7 @@ const styles = StyleSheet.create({
   dayInWeekText: {
     fontSize: Dimension.fontSize(16.6),
     ...fontDefault,
-    fontFamily: Fonts.RB_MEDIUM
+    fontFamily: Fonts.RB_MEDIUM,
   },
   calendarText: {
     fontSize: Dimension.fontSize(12.6),
@@ -247,6 +254,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
-})
+});
 
 export default HomeScreen;
