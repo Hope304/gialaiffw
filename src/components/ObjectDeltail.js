@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo, useRef, useState } from 'react';
+import React, {forwardRef, useCallback, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -16,22 +16,19 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-// import FullScreenImg from '../../../components/FullScreenImg';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import FastImage from 'react-native-fast-image';
-// import ConfirmActions from './ConfirmActions';
 // import F4Camera from '../../../components/Camera';
 import RNFS from 'react-native-fs';
 // import { useCameraPermission } from 'react-native-vision-camera';
 // import { ToastAlert, ToastSuccess } from '../../../components/Toast';
 import Dimension from '../contans/Dimension';
-import { fontDefault } from '../contans/Variable';
+import {fontDefault} from '../contans/Variable';
 import Colors from '../contans/Colors';
-import { Button, Heading, Image, Pressable } from 'native-base';
-import { shadowIOS } from '../contans/propsIOS';
+import {Button, Heading, Image, Pressable} from 'native-base';
+import {shadowIOS} from '../contans/propsIOS';
 import ConfirmActions from './ConfirmActions';
-import { RoundBtn, TextBtn } from './AllBtn';
-import { color } from 'native-base/lib/typescript/theme/styled-system';
+import {RoundBtn, TextBtn} from './AllBtn';
 
 const mainColor = '#a9edaa';
 const textCl = '#ffffff';
@@ -43,14 +40,8 @@ const path =
     : RNFS.DocumentDirectoryPath;
 
 const ObjectDetail = forwardRef((props, ref) => {
-  const {
-    projection,
-    objectInfo,
-    onSave,
-    onClose,
-    onRemove,
-    onChangeBottom,
-  } = props;
+  const {projection, objectInfo, onSave, onClose, onRemove, onChangeBottom} =
+    props;
   const properties = objectInfo?.properties;
   const geometry = objectInfo?.geometry;
   const name = properties?.name;
@@ -79,7 +70,7 @@ const ObjectDetail = forwardRef((props, ref) => {
 
   const handleSave = () => {
     const fieldFilter =
-      geoType == 'Point' ? { 'marker-color': mainColor } : { stroke: mainColor };
+      geoType == 'Point' ? {'marker-color': mainColor} : {stroke: mainColor};
     const newObj = {
       ...objectInfo,
       properties: {
@@ -132,13 +123,13 @@ const ObjectDetail = forwardRef((props, ref) => {
   // };
 
   const handlePickImg = fullImg => {
-    setImgPicker([{ uri: fullImg }]);
+    setImgPicker([{uri: fullImg}]);
 
     setToggleImgPicker(true);
   };
 
   const handleOpenRemove = () => {
-    setObjPicker({ prjName: geoType, id: properties?.id });
+    setObjPicker({prjName: geoType, id: properties?.id});
 
     setTimeout(() => {
       removeObjRef.current?.collapse();
@@ -157,7 +148,7 @@ const ObjectDetail = forwardRef((props, ref) => {
   };
 
   const albumRender = useCallback(
-    ({ item }) => {
+    ({item}) => {
       const fullImg = `file://${item}`;
 
       return (
@@ -167,7 +158,7 @@ const ObjectDetail = forwardRef((props, ref) => {
             handlePickImg(fullImg);
           }}>
           <FastImage
-            source={{ uri: fullImg }}
+            source={{uri: fullImg}}
             style={styles.img}
             resizeMode="cover"
           />
@@ -201,6 +192,7 @@ const ObjectDetail = forwardRef((props, ref) => {
           pd={10}
           iconSize={14}
           event={handleClose}
+          shadow={false}
         />
         <Heading style={styles.headerBottomText}>Thông tin đối tượng</Heading>
         <TextBtn
@@ -218,6 +210,7 @@ const ObjectDetail = forwardRef((props, ref) => {
           }
           // textFont={Fonts.SF_MEDIUM}
           event={handleSave}
+          shadow={false}
         />
       </View>
 
@@ -250,7 +243,9 @@ const ObjectDetail = forwardRef((props, ref) => {
             />
           </View>
           <View style={styles.containerEachLine}>
-            <Text style={styles.title} color="#ffffff">Thông tin đối tượng</Text>
+            <Text style={styles.title} color="#ffffff">
+              Thông tin đối tượng
+            </Text>
             <BottomSheetTextInput
               style={styles.inputText}
               placeholder={'Nhập thông tin đối tượng'}
@@ -301,7 +296,7 @@ const ObjectDetail = forwardRef((props, ref) => {
             {allPhotos?.length != 0 && allPhotos?.length != undefined && (
               <BottomSheetFlatList
                 scrollEnabled={false}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
+                columnWrapperStyle={{justifyContent: 'space-between'}}
                 data={allPhotos}
                 keyExtractor={(_, index) => index.toString()}
                 contentContainerStyle={styles.containerFlatlist}
@@ -373,7 +368,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: hp('1.8%'),
     paddingHorizontal: wp('3%'),
-    backgroundColor: Colors.PRIMARY_BLUE,
+    backgroundColor: mainColor,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
@@ -427,13 +422,13 @@ const styles = StyleSheet.create({
     // fontFamily: Fonts.SF_BOLD,
     fontSize: Dimension.fontSize(15),
     ...fontDefault,
-    color: Colors.TEXT_COLOR
+    color: Colors.TEXT_COLOR,
   },
 
   content: {
     // fontFamily: Fonts.SF_MEDIUM,
     fontSize: wp('3.6%'),
-    color: "#000",
+    color: '#000',
     marginLeft: 6,
   },
 
