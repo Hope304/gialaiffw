@@ -1,25 +1,25 @@
 import axios from "axios";
 import config from "../../config";
 import { getCurrCoords } from "../utils/mapFunc";
-import { mainURL } from "../contants/Variable";
-const WEATHER_TOKEN = '1e52cb7b5a93a86d54181d1fa5724454';
+import { mainURL } from "../contans/Variable";
+
 /////////////////////  WEATHERS DATA  ////////////////////
 export const getWeatherData = async () => {
-  const apiKey = WEATHER_TOKEN;
+  const apiKey = '306f7ce7a80341e492583526242204';
   try {
     const coords = await getCurrCoords();
-    console.log('hhhh', coords);
     const res = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longitude}&appid=${apiKey}`,
+      `https://api.weatherapi.com/v1/current.json?q=${coords.latitude},${coords.longitude}&key=${apiKey}`,
     );
-    console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${coords.latitude}&lon=${coords.longitude}&appid=${apiKey}`);
+
     const data = res.data;
-    console.log(data);
-    const iconCode = data.weather[0].icon;
-    const temp = (data.main.temp - 273.15).toFixed(0);
-    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    const name = data.name;
-    const weatherData = { temp, iconUrl, name };
+    const weather = data.current;
+    const temp = weather.temp_c.toFixed(0);
+    const iconUrl = `https:${weather.condition.icon}`;
+    const humidity = weather.humidity.toFixed(0);
+    const wind_kph = weather.wind_kph;
+    const wind_degree = weather.wind_degree;
+    const weatherData = { temp, iconUrl, humidity, wind_kph, wind_degree };
 
     return weatherData;
   } catch (error) {
@@ -32,8 +32,18 @@ export const getListFireLevel = async () => {
     const api = `${mainURL}/api/capchayIFEE`;
     const res = await axios.get(api);
     res => res.json();
-    return res;
+    return res.data;
   } catch (error) {
     console.log(error);
   }
 }
+
+export const getCommuneName = async () => {
+  try {
+    const coords = await getCurrCoords();
+    const res = await axios.get(
+      `https://forestry.ifee.edu.vn/api/mylocation?lat=${coords.latitude}&lon=${coords.longitude}`,
+    );
+    return res.data;
+  } catch (error) { }
+};

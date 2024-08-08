@@ -12,6 +12,9 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBJzmGYFqEJIVzjiR8WvdTHW_kDI0oAH68"/>
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -23,6 +26,7 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        
       </activity>
               <service
             android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"

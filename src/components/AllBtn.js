@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
-import { shadowIOS } from "../contants/propsIOS";
+import { shadowIOS } from "../contans/propsIOS";
 
 
 export const RoundBtn = ({
