@@ -7,6 +7,7 @@ import CommuneListFireLevel from '../screens/CommuneListFireLevel';
 import DetailFirePoint from '../screens/DetailFirePoint';
 import Contributor from '../screens/Contributor';
 import MapScreen from '../screens/Map';
+import ListFirePoint from '../screens/ListFirePoint';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const RootNavigator = () => {
     { name: 'DetailFirePoint', component: DetailFirePoint },
     { name: 'Contributor', component: Contributor },
     { name: 'MapScreen', component: MapScreen },
+    { name: 'ListFirePoint', component: ListFirePoint },
   ];
 
   return (

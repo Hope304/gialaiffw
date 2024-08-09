@@ -1,7 +1,7 @@
 import axios from "axios";
 import config from "../../config";
 import { getCurrCoords } from "../utils/mapFunc";
-import { mainURL } from "../contans/Variable";
+import { mainURL } from "../contants/Variable";
 
 /////////////////////  WEATHERS DATA  ////////////////////
 export const getWeatherData = async () => {
@@ -46,4 +46,63 @@ export const getCommuneName = async () => {
     );
     return res.data;
   } catch (error) { }
+};
+
+export const getRegionInfoData = async link => {
+  try {
+    const res = await axios.get(link);
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getVN2000Projection = async () => {
+  try {
+    const res = await axios.get(
+      'https://4forestry.ifee.edu.vn/api/get_vn2000projection',
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getVnRegionMap = async () => {
+  try {
+    const res = await axios.get(
+      'https://4forestry.ifee.edu.vn/api/get_vnregionmap',
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getListLayerWmsGeopfes = async () => {
+  try {
+    const res = await axios.get(
+      'https://4forestry.ifee.edu.vn/api/get_listlayerwmsgeopfes',
+    );
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFirePointDate = async data => {
+  console.log(data);
+  try {
+    const api = `https://giamsatrunghanam.xuanmaijsc.vn/api/getHotSpotInfo?from=${data.dateStart}&to=${data.dateEnd}`;
+
+    const res = await axios.get(api);
+    (res) => res.json();
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

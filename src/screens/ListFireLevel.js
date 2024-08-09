@@ -1,17 +1,17 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
 import Header from "../components/Header";
-import Colors from "../contans/Colors";
+import Colors from "../contants/Colors";
 import { getListFireLevel } from "../redux/apiRequest";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList } from "native-base";
+// import { FlatList } from "native-base";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { shadowIOS } from "../contans/propsIOS";
-import { fontDefault } from "../contans/Variable";
-import Dimension from "../contans/Dimension";
-import Fonts from "../contans/Fonts";
+import { shadowIOS } from "../contants/propsIOS";
+import { fontDefault } from "../contants/Variable";
+import Dimension from "../contants/Dimension";
+import Fonts from "../contants/Fonts";
 
 
 

@@ -20,15 +20,15 @@ import {
 import DocumentPicker from 'react-native-document-picker';
 import ConfirmActions from './ConfirmActions';
 import RNFS from 'react-native-fs';
-import Dimension from '../contans/Dimension';
+import Dimension from '../contants/Dimension';
 import { ToastAlert } from './Toast';
 import { RoundBtn } from './AllBtn';
-import Colors from '../contans/Colors';
+import Colors from '../contants/Colors';
 import { detectFilePicker } from '../utils/mapFunc';
-import { shadowIOS } from '../contans/propsIOS';
-import Images from '../contans/Images';
-import Fonts from '../contans/Fonts';
-import { rowAlignCenter } from '../contans/CssFE';
+import { shadowIOS } from '../contants/propsIOS';
+import Images from '../contants/Images';
+import Fonts from '../contants/Fonts';
+import { rowAlignCenter } from '../contants/CssFE';
 
 const mainColor = Colors.PRIMARY_BLUE;
 const fileImg = {

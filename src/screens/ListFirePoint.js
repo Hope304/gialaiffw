@@ -1,38 +1,24 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import { FlatList, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Header from "../components/Header";
+import { fontDefault } from "../contants/Variable";
+import Dimension from "../contants/Dimension";
+import Fonts from "../contants/Fonts";
+import Colors from "../contants/Colors";
+import { Checkbox } from "native-base";
+import { useState } from "react";
 import {
-  Image,
-  Text,
-  Pressable,
-  FlatList,
-  // Image,
-  Badge,
-  Box,
-  Button,
-  Center,
-  Checkbox,
-  Container,
-  VStack,
-  HStack,
-  Heading,
-  ScrollView,
-  Spacer,
-  Stack,
-} from 'native-base';
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import { TextBtn } from "../components/AllBtn";
+import Images from "../contants/Images";
+import { compareDate, formatDate, formatDateToPost } from "../utils/dateTimeFunc";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Loader from 'react-native-modal-loader';
-import Moment from 'moment';
-import Colors from '../contans/Colors';
-import Dimension from '../contans/Dimension';
-import {
-  compareDate,
-  formatDate,
-  formatDateToPost,
-} from '../untils/dateTimeFunc';
-import { getFirePointDate } from '../redux/apiRequest';
-// import { mainURL } from "../untils/Variable";
+import { getFirePointDate } from "../redux/apiRequest";
+import { shadowIOS } from "../contants/propsIOS";
 
-const ListFirePoint = ({ navigation }) => {
+const ListFirePoint = ({ navigation, route }) => {
+  const { title } = route.params;
   const [toggleDatePicker, setToggleDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dailyCheck, setDailyCheck] = useState(true);
@@ -44,8 +30,6 @@ const ListFirePoint = ({ navigation }) => {
   const [ToastAlert, setToastAlert] = useState(null);
   const [firePoint, setFirePoint] = useState([]);
   const [selectedValue, setSelectedValue] = useState('1');
-
-  // Hàm xử lý khi checkbox thay đổi
   const handleChange = value => {
     setSelectedValue(
       selectedValue === value ? (value === '1' ? '2' : '1') : value,
@@ -56,6 +40,7 @@ const ListFirePoint = ({ navigation }) => {
   };
 
   const handlePickDate = date => {
+    setLoadData(false);
     setToggleDatePicker(false);
     if (checkPick) {
       const dayStart = formatDate(date);
@@ -83,250 +68,208 @@ const ListFirePoint = ({ navigation }) => {
         console.log('ko hợp lệ');
       }
       setLoading(false);
-      console.log(firePoint.length);
+      console.log(firePoint);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
 
+  const RenderItem = ({ item, index }) => {
+    console.log('item', item);
+    return (
+      <TouchableOpacity
+        style={{
+          marginBottom: hp('2%'),
+          marginHorizontal: wp('2%'),
+          elevation: 6,
+          ...shadowIOS,
+          backgroundColor: '#ffffff',
+          borderRadius: 16,
+        }}
+        onPress={() => console.log(item)}
+      >
+        {/* {item.properties.XACMINH == 1 && (
+        )} */}
+        <Image source={Images.fire_notconfirmed} style={styles.firePointImg} />
+      </TouchableOpacity>
+    )
+  };
+
   return (
-    <Center>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        width={Dimension.setWidth(90)}>
-        <VStack space={4}>
-          <Box>
-            <VStack w="100%" space={4}>
-              <Badge
-                _text={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                }}>
-                Lựa chọn điểm cháy
-              </Badge>
-              <VStack space={4} width="full">
-                <Box>
-                  <Checkbox
-                    value="1"
-                    isChecked={selectedValue === '1'}
-                    onChange={() => handleChange('1')}
-                    my={1}>
-                    Dữ liệu cháy trong 24h qua
-                  </Checkbox>
-                </Box>
-                <Box>
-                  <Checkbox
-                    value="2"
-                    isChecked={selectedValue === '2'}
-                    onChange={() => handleChange('2')}
-                    my={1}>
-                    Lịch sử điểm cháy
-                  </Checkbox>
-                </Box>
-              </VStack>
-              {hisCheck && (
-                <VStack space={4}>
-                  <Pressable
-                    onPress={() => {
-                      setCheckPick(true);
-                      setToggleDatePicker(true);
-                    }}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-between">
-                      <Box
-                        alignItems="center"
-                        flex={1}
-                        borderWidth="1"
-                        _dark={{
-                          borderColor: 'muted.50',
-                        }}
-                        borderColor="muted.300"
-                        padding={3}>
-                        <Text>{startDay}</Text>
-                      </Box>
-                      <Image
-                        source={require('../assets/images/calendar.png')}
-                        alt="Alternate Text"
-                        size="xs"
-                      />
-                    </Stack>
-                  </Pressable>
-                  <Pressable
-                    onPress={() => {
-                      setCheckPick(false);
-                      setToggleDatePicker(true);
-                    }}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      justifyContent="space-between">
-                      <Box
-                        alignItems="center"
-                        flex={1}
-                        borderWidth="1"
-                        _dark={{
-                          borderColor: 'muted.50',
-                        }}
-                        borderColor="muted.300"
-                        padding={3}>
-                        <Text>{endDay}</Text>
-                      </Box>
-                      <Image
-                        source={require('../assets/images/calendar.png')}
-                        alt="Alternate Text"
-                        size="xs"
-                      />
-                    </Stack>
-                  </Pressable>
-                </VStack>
-              )}
-              <DateTimePickerModal
-                isVisible={toggleDatePicker}
-                mode="date"
-                onConfirm={handlePickDate}
-                onCancel={() => {
-                  setToggleDatePicker(false);
-                }}
+    <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <Header navigation={navigation}
+          title={title} />
+        <View style={styles.conten}>
+          <View style={styles.header} >
+            <Text style={styles.label} >Lựa chọn điểm cháy</Text>
+          </View>
+          <View style={styles.containerCheckBox} >
+            <View
+              style={styles.checkbox}>
+              <Checkbox
+                value="1"
+                isChecked={selectedValue === '1'}
+                onChange={() => handleChange('1')}
+                my={1}>
+                Dữ liệu cháy trong 24h qua
+              </Checkbox>
+            </View>
+            <View
+              style={styles.checkbox}>
+              <Checkbox
+                value="2"
+                isChecked={selectedValue === '2'}
+                onChange={() => handleChange('2')}
+                my={1}>
+                Lịch sử điểm cháy
+              </Checkbox>
+            </View>
+            {hisCheck && (
+              <View style={styles.containerCalendar}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setCheckPick(true);
+                    setToggleDatePicker(true);
+                  }}
+                  style={styles.calendar}
+                >
+                  <View style={styles.calendarText}>
+                    <Text style={styles.text}>{startDay}</Text>
+                  </View>
+                  <Image style={styles.calendarImage} source={Images.calendar} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setCheckPick(false);
+                    setToggleDatePicker(true);
+                  }}
+                  style={styles.calendar}
+                >
+                  <View style={styles.calendarText}>
+                    <Text style={styles.text}>{endDay}</Text>
+                  </View>
+                  <Image style={styles.calendarImage} source={Images.calendar} />
+                </TouchableOpacity>
+              </View>
+
+            )}
+            {!isLoadData ? (
+              <TextBtn
+                text={'Tải dữ liệu'}
+                btnColor={'#5B99C2'}
+                W={'100%'}
+                pd={15}
+                textFont={Fonts.RB_BOLD}
+                mTop={Dimension.setHeight(2)}
+                event={handleDownData}
               />
-              {!isLoadData ? (
-                <Button
-                  isLoading={loading}
-                  isLoadingText="Đang tải dữ liệu"
-                  w="100%"
-                  size="lg"
-                  shadow="3"
-                  onPress={handleDownData}>
-                  Tải dữ liệu điểm cháy
-                </Button>
-              ) : (
-                <Button
-                  w="100%"
-                  size="lg"
-                  shadow="3"
-                  onPress={() =>
-                    navigation.navigate('MapScreen', { firePoint: firePoint })
-                  }>
-                  Mở trong bản đồ
-                </Button>
-              )}
-            </VStack>
-          </Box>
-          <Box>
-            <Badge
-              _text={{
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}>
-              Điểm cháy trong ngày
-            </Badge>
-            <Box marginTop={4}>
-              {firePoint.length === 0 ? (
-                <Box alignItems="center" justifyContent="center">
-                  <Image
-                    source={require('../assets/images/empty.png')}
-                    size="xl"
-                    alt='empty'
-                    marginBottom={4}
-                  />
-                  <Text>Không có điểm cháy trong ngày</Text>
-                </Box>
-              ) : (
-                <FlatList
-                  data={firePoint}
-                  renderItem={({ item }) => (
-                    <Pressable
-                      onPress={() =>
-                        navigation.navigate('DetailFirePoint', item)
-                      }
-                      borderBottomWidth="1"
-                      _dark={{
-                        borderColor: 'muted.50',
-                      }}
-                      borderColor="muted.300"
-                      pl={['0', '4']}
-                      pr={['0', '5']}
-                      py="1">
-                      <HStack alignItems="center" space={5} paddingX={5}>
-                        {item.properties.XACMINH == 1 && (
-                          <Image
-                            source={require('../assets/images/fire_notconfirmed.png')}
-                            alt="Alternate Text"
-                            size="sm"
-                          />
-                        )}
-                        {item.properties.XACMINH == 2 && (
-                          <Image
-                            source={require('../assets/images/confirmed_fire_forest.png')}
-                            alt="Alternate Text"
-                            size="sm"
-                          />
-                        )}
-                        {item.properties.XACMINH == 3 && (
-                          <Image
-                            source={require('../assets/images/confirmed_not_fire.png')}
-                            alt="Alternate Text"
-                            size="sm"
-                          />
-                        )}
-                        {item.properties.XACMINH == 4 && (
-                          <Image
-                            source={require('../assets/images/confirmed_fire_not_forest.png')}
-                            alt="Alternate Text"
-                            size="sm"
-                          />
-                        )}
-                        <VStack space={0}>
-                          <Heading size="xs">
-                            {item.properties.XACMINH} -
-                            {item.properties.XACMINH == 1
-                              ? ' Chưa xác minh'
-                              : item.properties.XACMINH == 2
-                                ? ' Xác minh là cháy rừng'
-                                : item.properties.XACMINH == 3
-                                  ? ' Xác minh không phải cháy rừng'
-                                  : ' Xác minh có cháy nhưng không phải cháy rừng'}
-                          </Heading>
-                          <Text style={{ fontSize: 12 }}>
-                            Huyện: {item.properties.HUYEN}
-                          </Text>
-                          <Text style={{ fontSize: 12 }}>
-                            Xã: {item.properties.XA}
-                          </Text>
-                          <Text style={{ fontSize: 12 }}>
-                            Thời gian ghi nhận: {item.properties.ACQ_DATE}
-                          </Text>
-                          <View style={{ flexDirection: 'row' }}>
-                            <Text style={{ fontSize: 12 }}>
-                              Tiểu khu: {item.properties.TIEUKHU}
-                            </Text>
-                            <Text style={{ fontSize: 12 }}>
-                              {' '}
-                              - Khoảnh: {item.properties.KHOANH}
-                            </Text>
-                            <Text style={{ fontSize: 12 }}>
-                              {' '}
-                              - Lô: {item.properties.LO}
-                            </Text>
-                          </View>
-                          <Text style={{ fontSize: 12 }}>
-                            Độ tin cậy: {item.properties.CONFIDENCE}
-                          </Text>
-                        </VStack>
-                      </HStack>
-                    </Pressable>
-                  )}
-                  keyExtractor={item => item._id}
-                />
-              )}
-            </Box>
-          </Box>
-        </VStack>
-      </ScrollView>
-    </Center>
+            ) : (
+
+              <TextBtn
+                text={'Mở trong bản đồ'}
+                btnColor={'#5B99C2'}
+                W={'100%'}
+                pd={15}
+                textFont={Fonts.RB_BOLD}
+                mTop={Dimension.setHeight(2)}
+              // event={() => console.log(firePoint)}
+              />
+            )
+            }
+          </View>
+          <DateTimePickerModal
+            isVisible={toggleDatePicker}
+            mode="date"
+            onConfirm={handlePickDate}
+            onCancel={() => {
+              setToggleDatePicker(false);
+            }}
+          />
+          <View style={styles.header}>
+            <Text style={styles.label} >Điểm cháy trong ngày</Text>
+          </View>
+        </View>
+        {firePoint.length === 0 ? (
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Image style={{ width: Dimension.setWidth(60), height: Dimension.setWidth(60) }} source={Images.empty} />
+            <Text style={styles.text}>Không có điểm cháy trong ngày</Text>
+          </View>
+
+        ) : (
+          firePoint?.map((item, index) => {
+            <RenderItem item={item} index={index} />
+          })
+        )
+        }
+      </SafeAreaView>
+    </View>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  text: {
+    ...fontDefault,
+    fontSize: Dimension.fontSize(15),
+  },
+  label: {
+    ...fontDefault,
+    fontFamily: Fonts.RB_BOLD,
+    fontSize: Dimension.fontSize(15),
+  },
+  listItem: {
+    marginTop: Dimension.setHeight(3),
+    padding: Dimension.boxWidth(10)
+  },
+  item: {
+    padding: 10
+  },
+  conten: {
+    marginHorizontal: wp('2%')
+  },
+  calendar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center', paddingHorizontal:
+      Dimension.boxWidth(20),
+    gap: 10,
+    marginTop: Dimension.setHeight(2)
+  },
+  calendarText: {
+    borderWidth: 1,
+    flex: 1,
+    alignItems: 'center',
+    borderRadius: 4,
+    height: Dimension.boxHeight(40),
+    justifyContent: 'center',
+    borderColor: Colors.DARK_FIVE
+  },
+  calendarImage: {
+    width: Dimension.boxWidth(30),
+    height: Dimension.boxWidth(30),
+    resizeMode: "cover"
+  },
+  header: {
+    marginTop: Dimension.setHeight(2),
+    paddingVertical: Dimension.setHeight(2),
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: Colors.LIGHT_GREY2,
+    borderBottomColor: Colors.LIGHT_GREY2,
+    backgroundColor: Colors.WHITE,
+    paddingHorizontal: Dimension.setHeight(2)
+  },
+  checkbox: {
+    // marginTop: Dimension.setHeight(2),
+    borderBottomColor: Colors.LIGHT_GREY2,
+    borderBottomWidth: 1,
+    padding: Dimension.setHeight(2),
+  }
+})
 
 export default ListFirePoint;

@@ -1,10 +1,13 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {shadowIOS} from '../contans/propsIOS';
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { shadowIOS } from '../contants/propsIOS';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Colors from '../contants/Colors';
+import Images from '../contants/Images';
+import Fonts from '../contants/Fonts';
 export const RoundBtn = ({
   event,
   icon,
@@ -37,13 +40,13 @@ export const RoundBtn = ({
           marginTop: mTop || 0,
           marginBottom: mBottom || 0,
           padding: pd || 0,
-          transform: [{rotateZ: rotateZ || '0deg'}],
+          transform: [{ rotateZ: rotateZ || '0deg' }],
           width: w || 'auto',
           borderWidth: bdW || 0,
           borderColor: bdCl || 'transparent',
           borderRadius: bdRadius || 0,
         },
-        shadow && {...StyleSheet.flatten(styles.shadow)},
+        shadow && { ...StyleSheet.flatten(styles.shadow) },
       ]}>
       <Image
         source={icon}
@@ -99,12 +102,12 @@ export const TextBtn = ({
           borderColor: bdCl || 'transparent',
           alignSelf: als || 'auto',
         },
-        shadow && {...StyleSheet.flatten(styles.shadow)},
+        shadow && { ...StyleSheet.flatten(styles.shadow) },
       ]}>
       <Text
         style={{
           fontSize: textSize || wp('3.6%'),
-          // fontFamily: textFont || Fonts.SF_MEDIUM,
+          fontFamily: textFont || Fonts.RB_MEDIUM,
           color: textColor || Colors.WHITE,
           fontWeight: fw || 'normal',
         }}>
@@ -113,6 +116,47 @@ export const TextBtn = ({
     </TouchableOpacity>
   );
 };
+export const BackBtn2 = ({
+  event,
+  iconColor,
+  iconSize,
+  mLeft,
+  mRight,
+  mTop,
+  mBottom,
+  pd,
+  w,
+  icon,
+}) => {
+  return (
+    <TouchableOpacity
+      onPress={event}
+      style={[
+        styles.roundContainer,
+        {
+          backgroundColor: iconColor || Colors.DEFAULT_GREEN,
+          marginLeft: mLeft || 0,
+          marginRight: mRight || 0,
+          marginTop: mTop || 0,
+          marginBottom: mBottom || 0,
+          padding: pd || 10,
+          width: w || 'auto',
+          height: w || 'auto',
+          borderRadius: 50,
+        },
+      ]}>
+      <Image
+        source={icon ? icon : Images.back}
+        style={{
+          width: iconSize || 24,
+          height: iconSize || 24,
+          tintColor: '#ffffff',
+        }}
+      />
+    </TouchableOpacity>
+  );
+};
+
 
 const styles = StyleSheet.create({
   roundContainer: {

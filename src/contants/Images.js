@@ -12,6 +12,7 @@ const Images = {
   img4: require('../assets/images/4.jpg'),
   calendar: require('../assets/images/calendar.png'),
   back: require('../assets/images/back.png'),
+  add: require('../assets/images/add.png'),
   warning: require('../assets/images/warningRec.png'),
   mbtile: require('../assets/images/mbtilesfile.png'),
   up: require('../assets/images/up.png'),
@@ -39,7 +40,21 @@ const Images = {
   polygon: require('../assets/images/polygon.png'),
   line: require('../assets/images/line.png'),
   point: require('../assets/images/point.png'),
-  // bg: require('../assets/images/')
+  focus: require('../assets/images/focus.png'),
+  setting: require('../assets/images/setting.png'),
+  geolocation: require('../assets/images/geolocation.png'),
+  userLocation: require('../assets/images/userLocation.png'),
+  gps: require('../assets/images/gps.png'),
+  wms: require('../assets/images/wms.png'),
+  folder: require('../assets/images/folder.png'),
+  photos: require('../assets/images/photos.png'),
+  baseSatellite: require('../assets/images/basemap.png'),
+  baseHybrid: require('../assets/images/Hibirth.png'),
+  baseTerrain: require('../assets/images/Terrain.png'),
+  baseStandard: require('../assets/images/Trafict.png'),
+  targetLocation: require('../assets/images/targetLocation.png'),
+  calendar: require('../assets/images/calendar.png'),
+  empty: require('../assets/images/empty.png')
 }
 
 export default Images;

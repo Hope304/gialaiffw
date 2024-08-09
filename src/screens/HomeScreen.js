@@ -14,18 +14,18 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Images from '../contans/Images';
-import Dimension from '../contans/Dimension';
+import Images from '../contants/Images';
+import Dimension from '../contants/Dimension';
 import Slide from '../components/Carousel';
-import Colors from '../contans/Colors';
+import Colors from '../contants/Colors';
 import { RoundBtn } from '../components/AllBtn';
 import { HStack, Spinner } from 'native-base';
 import { getFormattedDate, getVietnameseDayOfWeek } from '../utils/dateTimeFunc';
-import { shadowIOS } from '../contans/propsIOS';
+import { shadowIOS } from '../contants/propsIOS';
 import { getCommuneName, getWeatherData } from '../redux/apiRequest';
 import { requestPermissions } from '../utils/permissionFunc';
-import { fontDefault } from '../contans/Variable';
-import Fonts from '../contans/Fonts';
+import { fontDefault } from '../contants/Variable';
+import Fonts from '../contants/Fonts';
 import { useFocusEffect } from '@react-navigation/native';
 const defaultW = wp('100%');
 const defaultH = hp('60%');

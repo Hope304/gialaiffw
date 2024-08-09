@@ -1,13 +1,13 @@
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Header from "../components/Header";
-import { fontDefault } from "../contans/Variable";
-import Dimension from "../contans/Dimension";
-import Fonts from "../contans/Fonts";
+import { fontDefault } from "../contants/Variable";
+import Dimension from "../contants/Dimension";
+import Fonts from "../contants/Fonts";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { shadowIOS } from "../contans/propsIOS";
+import { shadowIOS } from "../contants/propsIOS";
 
 const CommuneListFireLevel = ({ navigation, route }) => {
   const { title, item } = route.params;

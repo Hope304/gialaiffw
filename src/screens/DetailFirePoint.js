@@ -1,14 +1,14 @@
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { fontDefault } from "../contans/Variable";
-import Fonts from "../contans/Fonts";
-import Dimension from "../contans/Dimension";
+import { fontDefault } from "../contants/Variable";
+import Fonts from "../contants/Fonts";
+import Dimension from "../contants/Dimension";
 import Header from "../components/Header";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { shadowIOS } from "../contans/propsIOS";
-import Colors from "../contans/Colors";
+import { shadowIOS } from "../contants/propsIOS";
+import Colors from "../contants/Colors";
 import { Center } from "native-base";
 
 const DetailFirePoint = ({ navigation, route }) => {

@@ -1,8 +1,8 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import Header from "../components/Header";
-import { fontDefault } from "../contans/Variable";
-import Dimension from "../contans/Dimension";
-import Fonts from "../contans/Fonts";
+import { fontDefault } from "../contants/Variable";
+import Dimension from "../contants/Dimension";
+import Fonts from "../contants/Fonts";
 
 const Contributor = ({ navigation, route }) => {
   const { title } = route.params;

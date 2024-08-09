@@ -14,8 +14,8 @@ import {
 } from 'react-native-responsive-screen';
 import { Checkbox, Text, } from 'native-base';
 import { RoundBtn } from './AllBtn';
-import Colors from '../contans/Colors';
-import { rowAlignCenter } from '../contans/CssFE';
+import Colors from '../contants/Colors';
+import { rowAlignCenter } from '../contants/CssFE';
 
 const height = Platform.OS === 'ios' ? '28%' : '33%';
 
@@ -23,7 +23,6 @@ const MapSetting = forwardRef((props, ref) => {
   const {
     data,
     objectDraw,
-    objectPhoto,
     objectFile,
     objectWMS,
     onClose,

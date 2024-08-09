@@ -5,10 +5,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Colors from '../contans/Colors';
+import Colors from '../contants/Colors';
 import { TextBtn } from './AllBtn';
-import Fonts from '../contans/Fonts';
-import Images from '../contans/Images';
+import Fonts from '../contants/Fonts';
+import Images from '../contants/Images';
 
 const marginItem = hp('0.8%');
 const height = Platform.OS === 'ios' ? '26%' : '28%';

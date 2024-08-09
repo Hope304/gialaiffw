@@ -215,6 +215,43 @@ const roundNumber = (num, dec) => {
   return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec);
 
 };
+const calculateAreaPolygonHa = arr => {
+  const radius = 6371000;
+
+  const diameter = radius * 2;
+  const circumference = diameter * Math.PI;
+  const listY = [];
+  const listX = [];
+  const listArea = [];
+
+  const latitudeRef = arr[0][1];
+  const longitudeRef = arr[0][0];
+  for (let i = 1; i < arr?.length; i++) {
+    let latitude = arr[i][1];
+    let longitude = arr[i][0];
+    listY.push(calculateYSegment(latitudeRef, latitude, circumference));
+    listX.push(
+      calculateXSegment(longitudeRef, longitude, latitude, circumference),
+    );
+  }
+
+  for (let i = 1; i < listX?.length; i++) {
+    let x1 = listX[i - 1];
+    let y1 = listY[i - 1];
+    let x2 = listX[i];
+    let y2 = listY[i];
+    listArea.push(calculateAreaInSquareMeters(x1, x2, y1, y2));
+  }
+
+  let areasSum = 0;
+  listArea.forEach(area => (areasSum = areasSum + area));
+
+  let areaCalcA = Math.abs(areasSum) / 10000;
+  let areaCalc = (
+    Math.round(areaCalcA * 1000000000000000) / 1000000000000000
+  ).toFixed(2);
+  return areaCalc;
+};
 const calculateAreaPolygonMeter = arr => {
   const radius = 6371000;
 
@@ -272,5 +309,5 @@ const getCurrCoords = () => {
 
 export {
   getCurrCoords,
-  prjTransform, calculateDistance, calculatePolylineLength, roundNumber, calculateAreaPolygonMeter, detectFilePicker
+  prjTransform, calculateDistance, calculatePolylineLength, roundNumber, calculateAreaPolygonMeter, detectFilePicker, calculateAreaPolygonHa
 };
