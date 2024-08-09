@@ -1,7 +1,7 @@
-import axios from "axios";
-import config from "../../config";
-import { getCurrCoords } from "../utils/mapFunc";
-import { mainURL } from "../contants/Variable";
+import axios from 'axios';
+import config from '../../config';
+import {getCurrCoords} from '../utils/mapFunc';
+import {mainURL} from '../contants/Variable';
 
 /////////////////////  WEATHERS DATA  ////////////////////
 export const getWeatherData = async () => {
@@ -19,7 +19,7 @@ export const getWeatherData = async () => {
     const humidity = weather.humidity.toFixed(0);
     const wind_kph = weather.wind_kph;
     const wind_degree = weather.wind_degree;
-    const weatherData = { temp, iconUrl, humidity, wind_kph, wind_degree };
+    const weatherData = {temp, iconUrl, humidity, wind_kph, wind_degree};
 
     return weatherData;
   } catch (error) {
@@ -36,7 +36,7 @@ export const getListFireLevel = async () => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const getCommuneName = async () => {
   try {
@@ -45,7 +45,7 @@ export const getCommuneName = async () => {
       `https://forestry.ifee.edu.vn/api/mylocation?lat=${coords.latitude}&lon=${coords.longitude}`,
     );
     return res.data;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const getRegionInfoData = async link => {
@@ -95,12 +95,22 @@ export const getListLayerWmsGeopfes = async () => {
 };
 
 export const getFirePointDate = async data => {
-  console.log(data);
   try {
     const api = `https://giamsatrunghanam.xuanmaijsc.vn/api/getHotSpotInfo?from=${data.dateStart}&to=${data.dateEnd}`;
 
     const res = await axios.get(api);
-    (res) => res.json();
+    res => res.json();
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getFirePointDaily = async data => {
+  try {
+    const api = `https://giamsatrunghanam.xuanmaijsc.vn/api/hotspots`;
+
+    const res = await axios.get(api);
+    res => res.json();
     return res.data;
   } catch (error) {
     console.log(error);

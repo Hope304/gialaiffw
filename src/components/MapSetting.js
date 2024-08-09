@@ -1,4 +1,4 @@
-import React, { useMemo, forwardRef, useState, useCallback } from 'react';
+import React, {useMemo, forwardRef, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -12,10 +12,10 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import { Checkbox, Text, } from 'native-base';
-import { RoundBtn } from './AllBtn';
+import {Checkbox, Text} from 'native-base';
+import {RoundBtn} from './AllBtn';
 import Colors from '../contants/Colors';
-import { rowAlignCenter } from '../contants/CssFE';
+import {rowAlignCenter} from '../contants/CssFE';
 
 const height = Platform.OS === 'ios' ? '28%' : '33%';
 
@@ -23,6 +23,7 @@ const MapSetting = forwardRef((props, ref) => {
   const {
     data,
     objectDraw,
+    objectFirePoint,
     objectFile,
     objectWMS,
     onClose,
@@ -39,7 +40,7 @@ const MapSetting = forwardRef((props, ref) => {
   };
 
   const renderMap = useCallback(
-    ({ item, index }) => {
+    ({item, index}) => {
       return (
         <Pressable
           style={styles.mapBtnContainer}
@@ -91,7 +92,7 @@ const MapSetting = forwardRef((props, ref) => {
               alignSelf: 'center',
             },
           ]}>
-          <View style={{ width: 14 }} />
+          <View style={{width: 14}} />
           <Text style={styles.heading}>Thiết lập bản đồ</Text>
           <RoundBtn
             icon={require('../assets/images/close.png')}
@@ -121,8 +122,6 @@ const MapSetting = forwardRef((props, ref) => {
               <Text style={styles.textObj}>Đối tượng khoanh vẽ</Text>
             </Checkbox>
           </View>
-        </View>
-        <View style={styles.contentObj}>
           <View style={styles.objContainer}>
             <Checkbox
               isChecked={objectFile}
@@ -138,6 +137,23 @@ const MapSetting = forwardRef((props, ref) => {
               <Text style={styles.textObj}>File bản đồ</Text>
             </Checkbox>
           </View>
+        </View>
+        <View style={styles.contentObj}>
+          <View style={styles.objContainer}>
+            <Checkbox
+              isChecked={objectFirePoint}
+              colorScheme="blue"
+              flexDirection={'row'}
+              alignItems={'center'}
+              borderWidth={1}
+              borderRadius={4}
+              p={1}
+              onChange={e => {
+                onChangeMapStatus(e, 2);
+              }}>
+              <Text style={styles.textObj}>Điểm cháy</Text>
+            </Checkbox>
+          </View>
           <View style={styles.objContainer}>
             <Checkbox
               isChecked={objectWMS}
@@ -148,7 +164,7 @@ const MapSetting = forwardRef((props, ref) => {
               borderRadius={4}
               p={1}
               onChange={e => {
-                onChangeMapStatus(e, 2);
+                onChangeMapStatus(e, 3);
               }}>
               <Text style={styles.textObj}>Bản đồ trực tuyến</Text>
             </Checkbox>

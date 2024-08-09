@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { shadowIOS } from '../contants/propsIOS';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {shadowIOS} from '../contants/propsIOS';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -40,13 +40,13 @@ export const RoundBtn = ({
           marginTop: mTop || 0,
           marginBottom: mBottom || 0,
           padding: pd || 0,
-          transform: [{ rotateZ: rotateZ || '0deg' }],
+          transform: [{rotateZ: rotateZ || '0deg'}],
           width: w || 'auto',
           borderWidth: bdW || 0,
           borderColor: bdCl || 'transparent',
           borderRadius: bdRadius || 0,
         },
-        shadow && { ...StyleSheet.flatten(styles.shadow) },
+        shadow && {...StyleSheet.flatten(styles.shadow)},
       ]}>
       <Image
         source={icon}
@@ -82,6 +82,7 @@ export const TextBtn = ({
   fw,
   als,
   shadow = true,
+  flex = false,
 }) => {
   return (
     <TouchableOpacity
@@ -102,7 +103,8 @@ export const TextBtn = ({
           borderColor: bdCl || 'transparent',
           alignSelf: als || 'auto',
         },
-        shadow && { ...StyleSheet.flatten(styles.shadow) },
+        shadow && {...StyleSheet.flatten(styles.shadow)},
+        flex && {...StyleSheet.flatten(styles.flex)},
       ]}>
       <Text
         style={{
@@ -157,7 +159,6 @@ export const BackBtn2 = ({
   );
 };
 
-
 const styles = StyleSheet.create({
   roundContainer: {
     alignItems: 'center',
@@ -167,5 +168,8 @@ const styles = StyleSheet.create({
     elevation: 4,
     shadowColor: '#171717',
     ...shadowIOS,
+  },
+  flex: {
+    flex: 1,
   },
 });

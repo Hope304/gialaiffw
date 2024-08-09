@@ -1,28 +1,33 @@
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
-import Header from "../components/Header";
-import Colors from "../contants/Colors";
-import { getListFireLevel } from "../redux/apiRequest";
-import { useEffect, useLayoutEffect, useState } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from 'react-native';
+import Header from '../components/Header';
+import Colors from '../contants/Colors';
+import {getListFireLevel} from '../redux/apiRequest';
+import {useEffect, useLayoutEffect, useState} from 'react';
 // import { FlatList } from "native-base";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { shadowIOS } from "../contants/propsIOS";
-import { fontDefault } from "../contants/Variable";
-import Dimension from "../contants/Dimension";
-import Fonts from "../contants/Fonts";
+import {shadowIOS} from '../contants/propsIOS';
+import {fontDefault} from '../contants/Variable';
+import Dimension from '../contants/Dimension';
+import Fonts from '../contants/Fonts';
 
-
-
-const ListFireLevel = ({ navigation, route }) => {
-  const { title } = route.params;
+const ListFireLevel = ({navigation, route}) => {
+  const {title} = route.params;
   const [listFireLevel, setListFireLevel] = useState([]);
 
   const fetchData = async () => {
     try {
       const Data = await getListFireLevel();
-      const DataTemp = getUnique(Data, "MAHUYEN");
+      const DataTemp = getUnique(Data, 'MAHUYEN');
       const listHuyen = [];
       for (var i = 0; i < DataTemp.length; i++) {
         const ListData = [];
@@ -82,20 +87,19 @@ const ListFireLevel = ({ navigation, route }) => {
     }
   };
 
-
   useEffect(() => {
     fetchData();
   }, []);
   const getUnique = (arr, index) => {
     const unique = arr
-      .map((e) => e[index])
+      .map(e => e[index])
       .map((e, i, final) => final.indexOf(e) === i && i)
-      .filter((e) => arr[e])
-      .map((e) => arr[e]);
+      .filter(e => arr[e])
+      .map(e => arr[e]);
     return unique;
-  }
+  };
 
-  const RenderItem = ({ item, index }) => {
+  const RenderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         style={{
@@ -106,13 +110,19 @@ const ListFireLevel = ({ navigation, route }) => {
           backgroundColor: '#ffffff',
           borderRadius: 16,
         }}
-        onPress={() => navigation.navigate('CommuneListFireLevel', { item: item.listXa, title: 'Danh sách cấp cháy xã' })}
-      >
-        <View style={styles.listItem} >
-          <Text style={styles.title} >{item.mahuyen} - {item.huyen}</Text>
+        onPress={() =>
+          navigation.navigate('CommuneListFireLevel', {
+            item: item.listXa,
+            title: 'Danh sách cấp cháy xã',
+          })
+        }>
+        <View style={styles.listItem}>
+          <Text style={styles.title}>
+            {item.mahuyen} - {item.huyen}
+          </Text>
           <Text style={styles.text}>Tổng số xã: {item.tongxa}</Text>
           <Text style={styles.text}>Số xã ở các cấp cháy:</Text>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{flexDirection: 'row'}}>
             <Text style={styles.text}>Cấp V: {item.capV}, </Text>
             <Text style={styles.text}>Cấp IV: {item.capIV}, </Text>
             <Text style={styles.text}>Cấp III: {item.capIII}, </Text>
@@ -121,10 +131,8 @@ const ListFireLevel = ({ navigation, route }) => {
           </View>
         </View>
       </TouchableOpacity>
-    )
+    );
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -137,14 +145,13 @@ const ListFireLevel = ({ navigation, route }) => {
             <RenderItem item={item.item} index={index} />
           )}
           showsVerticalScrollIndicator={false}
-          style={{ marginTop: Dimension.setHeight(4) }}
-        // refreshing={refresh}
+          style={{marginTop: Dimension.setHeight(4)}}
+          // refreshing={refresh}
         />
       </SafeAreaView>
     </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -161,8 +168,8 @@ const styles = StyleSheet.create({
     fontSize: Dimension.fontSize(15),
   },
   listItem: {
-    padding: Dimension.boxWidth(10)
-  }
-})
+    padding: Dimension.boxWidth(10),
+  },
+});
 
 export default ListFireLevel;

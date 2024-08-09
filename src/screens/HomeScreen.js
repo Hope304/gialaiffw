@@ -8,31 +8,31 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Images from '../contants/Images';
 import Dimension from '../contants/Dimension';
 import Slide from '../components/Carousel';
 import Colors from '../contants/Colors';
-import { RoundBtn } from '../components/AllBtn';
-import { HStack, Spinner } from 'native-base';
-import { getFormattedDate, getVietnameseDayOfWeek } from '../utils/dateTimeFunc';
-import { shadowIOS } from '../contants/propsIOS';
-import { getCommuneName, getWeatherData } from '../redux/apiRequest';
-import { requestPermissions } from '../utils/permissionFunc';
-import { fontDefault } from '../contants/Variable';
+import {RoundBtn} from '../components/AllBtn';
+import {HStack, Spinner} from 'native-base';
+import {getFormattedDate, getVietnameseDayOfWeek} from '../utils/dateTimeFunc';
+import {shadowIOS} from '../contants/propsIOS';
+import {getCommuneName, getWeatherData} from '../redux/apiRequest';
+import {requestPermissions} from '../utils/permissionFunc';
+import {fontDefault} from '../contants/Variable';
 import Fonts from '../contants/Fonts';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 const defaultW = wp('100%');
 const defaultH = hp('60%');
 
 const data = [Images.img1, Images.img2, Images.img3, Images.img4];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const [weather, setWeather] = useState(null);
   const weekdays = getVietnameseDayOfWeek();
   const date = getFormattedDate();
@@ -72,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
         }
       } else if (result.action === Share.dismissedAction) {
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useFocusEffect(
@@ -83,7 +83,7 @@ const HomeScreen = ({ navigation }) => {
   );
 
   const handleClickNavigate = (routerName, title) => {
-    navigation.navigate(routerName, { title: title });
+    navigation.navigate(routerName, {title: title});
   };
 
   return (
@@ -100,7 +100,7 @@ const HomeScreen = ({ navigation }) => {
       <ImageBackground
         resizeMode="cover"
         source={Images.bg}
-        style={{ width: defaultW, height: defaultH, marginBottom: hp('4%') }}>
+        style={{width: defaultW, height: defaultH, marginBottom: hp('4%')}}>
         <View style={styles.appInforContainer}>
           <View>
             <Text style={styles.appNameText}>Gia Lai FFW</Text>
@@ -108,7 +108,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <Image source={Images.logo} style={styles.logoImg} />
         </View>
-        <Slide data={data} stylesContain={{ marginTop: hp('4%') }} />
+        <Slide data={data} stylesContain={{marginTop: hp('4%')}} />
         <View style={styles.btnContainer}>
           <View>
             <RoundBtn
@@ -129,9 +129,13 @@ const HomeScreen = ({ navigation }) => {
               btnColor={Colors.WHITE}
               iconSize={40}
               pd={10}
-
               bdRadius={10}
-              event={() => navigation.navigate('MapScreen', { title: 'Bản đồ' })}
+              event={() =>
+                navigation.navigate('MapScreen', {
+                  title: 'Bản đồ',
+                  firePoint: [],
+                })
+              }
             />
             <Text style={styles.btnText}>Bản đồ</Text>
           </View>
@@ -142,7 +146,9 @@ const HomeScreen = ({ navigation }) => {
               iconSize={40}
               pd={10}
               bdRadius={10}
-              event={() => navigation.navigate('Contributor', { title: 'Thông tin tác giả' })}
+              event={() =>
+                navigation.navigate('Contributor', {title: 'Thông tin tác giả'})
+              }
             />
             <Text style={styles.btnText}>Tác giả</Text>
           </View>
@@ -182,7 +188,7 @@ const HomeScreen = ({ navigation }) => {
             ) : (
               <>
                 <Image
-                  source={{ uri: weather?.iconUrl }}
+                  source={{uri: weather?.iconUrl}}
                   style={styles.weatherImg}
                 />
                 <View
@@ -200,50 +206,50 @@ const HomeScreen = ({ navigation }) => {
                       ? ' Hướng Bắc'
                       : weather?.wind_degree > 11.25 &&
                         weather?.wind_degree <= 33.75
-                        ? ' Huớng BĐB'
-                        : weather?.wind_degree > 33.75 &&
-                          weather?.wind_degree <= 56.25
-                          ? ' Huớng ĐB'
-                          : weather?.wind_degree > 56.25 &&
-                            weather?.wind_degree <= 78.75
-                            ? ' Huớng ĐĐB'
-                            : weather?.wind_degree > 78.75 &&
-                              weather?.wind_degree <= 101.25
-                              ? ' Hướng Đông'
-                              : weather?.wind_degree > 101.25 &&
-                                weather?.wind_degree <= 123.75
-                                ? ' Huớng ĐĐN'
-                                : weather?.wind_degree > 123.75 &&
-                                  weather?.wind_degree <= 146.25
-                                  ? ' Huớng ĐN'
-                                  : weather?.wind_degree > 146.25 &&
-                                    weather?.wind_degree <= 168.75
-                                    ? ' Huớng NĐN'
-                                    : weather?.wind_degree > 168.75 &&
-                                      weather?.wind_degree <= 191.25
-                                      ? ' Hướng Nam'
-                                      : weather?.wind_degree > 191.25 &&
-                                        weather?.wind_degree <= 213.75
-                                        ? ' Huớng NTN'
-                                        : weather?.wind_degree > 213.75 &&
-                                          weather?.wind_degree <= 236.25
-                                          ? ' Huớng TN'
-                                          : weather?.wind_degree > 236.25 &&
-                                            weather?.wind_degree <= 258.75
-                                            ? ' Huớng TTN'
-                                            : weather?.wind_degree > 258.75 &&
-                                              weather?.wind_degree <= 281.25
-                                              ? ' Hướng Tây'
-                                              : weather?.wind_degree > 281.25 &&
-                                                weather?.wind_degree <= 303.75
-                                                ? ' Huớng TTB'
-                                                : weather?.wind_degree > 303.75 &&
-                                                  weather?.wind_degree <= 326.25
-                                                  ? ' Huớng TB'
-                                                  : weather?.wind_degree > 326.25 &&
-                                                    weather?.wind_degree <= 348.75
-                                                    ? ' Huớng BTB'
-                                                    : ' Hướng Bắc'}
+                      ? ' Huớng BĐB'
+                      : weather?.wind_degree > 33.75 &&
+                        weather?.wind_degree <= 56.25
+                      ? ' Huớng ĐB'
+                      : weather?.wind_degree > 56.25 &&
+                        weather?.wind_degree <= 78.75
+                      ? ' Huớng ĐĐB'
+                      : weather?.wind_degree > 78.75 &&
+                        weather?.wind_degree <= 101.25
+                      ? ' Hướng Đông'
+                      : weather?.wind_degree > 101.25 &&
+                        weather?.wind_degree <= 123.75
+                      ? ' Huớng ĐĐN'
+                      : weather?.wind_degree > 123.75 &&
+                        weather?.wind_degree <= 146.25
+                      ? ' Huớng ĐN'
+                      : weather?.wind_degree > 146.25 &&
+                        weather?.wind_degree <= 168.75
+                      ? ' Huớng NĐN'
+                      : weather?.wind_degree > 168.75 &&
+                        weather?.wind_degree <= 191.25
+                      ? ' Hướng Nam'
+                      : weather?.wind_degree > 191.25 &&
+                        weather?.wind_degree <= 213.75
+                      ? ' Huớng NTN'
+                      : weather?.wind_degree > 213.75 &&
+                        weather?.wind_degree <= 236.25
+                      ? ' Huớng TN'
+                      : weather?.wind_degree > 236.25 &&
+                        weather?.wind_degree <= 258.75
+                      ? ' Huớng TTN'
+                      : weather?.wind_degree > 258.75 &&
+                        weather?.wind_degree <= 281.25
+                      ? ' Hướng Tây'
+                      : weather?.wind_degree > 281.25 &&
+                        weather?.wind_degree <= 303.75
+                      ? ' Huớng TTB'
+                      : weather?.wind_degree > 303.75 &&
+                        weather?.wind_degree <= 326.25
+                      ? ' Huớng TB'
+                      : weather?.wind_degree > 326.25 &&
+                        weather?.wind_degree <= 348.75
+                      ? ' Huớng BTB'
+                      : ' Hướng Bắc'}
                   </Text>
                   <Text style={styles.calendarText}>
                     {communeName ? communeName : '...'}

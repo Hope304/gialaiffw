@@ -1,18 +1,25 @@
-import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Header from "../components/Header";
-import { fontDefault } from "../contants/Variable";
-import Dimension from "../contants/Dimension";
-import Fonts from "../contants/Fonts";
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Header from '../components/Header';
+import {fontDefault} from '../contants/Variable';
+import Dimension from '../contants/Dimension';
+import Fonts from '../contants/Fonts';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { shadowIOS } from "../contants/propsIOS";
+import {shadowIOS} from '../contants/propsIOS';
 
-const CommuneListFireLevel = ({ navigation, route }) => {
-  const { title, item } = route.params;
+const CommuneListFireLevel = ({navigation, route}) => {
+  const {title, item} = route.params;
 
-  const RenderItem = ({ item, index }) => {
+  const RenderItem = ({item, index}) => {
     return (
       <TouchableOpacity
         style={{
@@ -24,18 +31,22 @@ const CommuneListFireLevel = ({ navigation, route }) => {
           borderRadius: 16,
         }}
         key={index}
-        onPress={() => navigation.navigate('DetailFirePoint', { item: item, title: 'Chi tiết điểm cháy' })}
-      >
-        <View style={styles.listItem} >
-          <Text style={styles.title} >{item.MAXA} - {item.XA}</Text>
+        onPress={() =>
+          navigation.navigate('DetailInfoCommune', {
+            item: item,
+            title: 'Thông tin chi tiết',
+          })
+        }>
+        <View style={styles.listItem}>
+          <Text style={styles.title}>
+            {item.MAXA} - {item.XA}
+          </Text>
           <Text style={styles.text}>Huyện: {item.HUYEN}</Text>
           <Text style={styles.text}>Cấp cháy: {item.CAPCHAY}</Text>
         </View>
       </TouchableOpacity>
-    )
+    );
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -48,14 +59,13 @@ const CommuneListFireLevel = ({ navigation, route }) => {
             <RenderItem item={item.item} index={index} />
           )}
           showsVerticalScrollIndicator={false}
-          style={{ marginTop: Dimension.setHeight(4) }}
-        // refreshing={refresh}
+          style={{marginTop: Dimension.setHeight(4)}}
+          // refreshing={refresh}
         />
       </SafeAreaView>
     </View>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -72,8 +82,8 @@ const styles = StyleSheet.create({
     fontSize: Dimension.fontSize(15),
   },
   listItem: {
-    padding: Dimension.boxWidth(10)
-  }
-})
+    padding: Dimension.boxWidth(10),
+  },
+});
 
 export default CommuneListFireLevel;

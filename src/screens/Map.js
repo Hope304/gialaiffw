@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -24,8 +24,8 @@ import {
   getCurrCoords,
   roundNumber,
 } from '../utils/mapFunc';
-import { BackBtn2, RoundBtn, TextBtn } from '../components/AllBtn';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {BackBtn2, RoundBtn, TextBtn} from '../components/AllBtn';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -35,13 +35,13 @@ import Fonts from '../contants/Fonts';
 import Geolocation from 'react-native-geolocation-service';
 import Images from '../contants/Images';
 // import ProjectionSystem from './components/ProjectionBottomSheet';
-import { defaultProjection, VNCoor } from '../contants/MapVariable';
-import { prjTransform } from '../utils/mapFunc';
-import { getRegionInfoData, getVN2000Projection } from '../redux/apiRequest';
+import {defaultProjection, VNCoor} from '../contants/MapVariable';
+import {prjTransform} from '../utils/mapFunc';
+import {getRegionInfoData, getVN2000Projection} from '../redux/apiRequest';
 // import { CoorSearchModal, LandRender } from '../components/MapComponent';
-import { ToastAlert, ToastSuccess } from '../components/Toast';
+import {ToastAlert, ToastSuccess} from '../components/Toast';
 // import { useCameraPermission } from 'react-native-vision-camera';
-import { readObjData, storeObjData } from '../utils/storageData';
+import {readObjData, storeObjData} from '../utils/storageData';
 // import ImageLibrary from './components/ImageLibrary';
 // import { geoKey } from './variable/asyncStorageKey';
 import StaggerCustom from '../components/StaggerCustom';
@@ -58,7 +58,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import ConfirmActions from '../components/ConfirmActions';
 import RNFS from 'react-native-fs';
-import { rowAlignCenter } from '../contants/CssFE';
+import {rowAlignCenter} from '../contants/CssFE';
 import ObjectDetail from '../components/ObjectDeltail';
 import {
   generateID,
@@ -77,24 +77,24 @@ import {
 import MapSetting from '../components/MapSetting';
 // import F4Camera from '../../components/Camera';
 // import { useSelector } from 'react-redux';
-import { closeNotifier, warningNotifier } from '../components/Notifier';
+import {closeNotifier, warningNotifier} from '../components/Notifier';
 // import BackgroundFetch from 'react-native-background-fetch';
 // import SystemNavigationBar from 'react-native-system-navigation-bar';
 import Loading from '../components/LoadingUI';
-import { HStack, Pressable, Spacer } from 'native-base';
+import {HStack, Pressable, Spacer} from 'native-base';
 import Dimension from '../contants/Dimension';
-import { fontDefault } from '../contants/Variable';
-import { useFocusEffect } from '@react-navigation/native';
+import {fontDefault} from '../contants/Variable';
+import {useFocusEffect} from '@react-navigation/native';
 
 const isIOS = Platform.OS === 'ios';
 const iconSize = 18;
 const btnSpace = 12;
 const pad = 9;
 const mapbase = [
-  { title: 'Tích hợp', img: Images.baseHybrid, map: MAP_TYPES.HYBRID },
-  { title: 'Vệ tinh', img: Images.baseSatellite, map: MAP_TYPES.SATELLITE },
-  { title: 'Giao thông', img: Images.baseStandard, map: MAP_TYPES.STANDARD },
-  { title: 'Địa hình', img: Images.baseTerrain, map: MAP_TYPES.TERRAIN },
+  {title: 'Tích hợp', img: Images.baseHybrid, map: MAP_TYPES.HYBRID},
+  {title: 'Vệ tinh', img: Images.baseSatellite, map: MAP_TYPES.SATELLITE},
+  {title: 'Giao thông', img: Images.baseStandard, map: MAP_TYPES.STANDARD},
+  {title: 'Địa hình', img: Images.baseTerrain, map: MAP_TYPES.TERRAIN},
 ];
 
 const locationConfig = {
@@ -107,11 +107,11 @@ const locationConfig = {
 };
 
 const mode = {
-  0: { name: 'Point', img: Images.point },
-  1: { name: 'LineString', img: Images.line },
-  2: { name: 'Polygon', img: Images.polygon },
-  3: { name: 'GPSLineString', img: Images.line },
-  4: { name: 'GPSPolygon', img: Images.polygon },
+  0: {name: 'Point', img: Images.point},
+  1: {name: 'LineString', img: Images.line},
+  2: {name: 'Polygon', img: Images.polygon},
+  3: {name: 'GPSLineString', img: Images.line},
+  4: {name: 'GPSPolygon', img: Images.polygon},
 };
 
 const commonColor = {
@@ -135,7 +135,8 @@ const path =
     ? RNFS.DownloadDirectoryPath
     : RNFS.DocumentDirectoryPath;
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({navigation, route}) => {
+  const {firePoint} = route.params;
   const id = 0;
   // const { hasPermission, requestPermission } = useCameraPermission();
   // const isConnected = useSelector(state => state.internet?.internet.state);
@@ -181,6 +182,7 @@ const MapScreen = ({ navigation }) => {
   const [toggleFileField, setToggleFileField] = useState(false);
   const [propsPicker, setPropsPicker] = useState(null);
   const [objectDraw, setObjectDraw] = useState(true);
+  const [objectFirePoint, setObjectFrirePoint] = useState(true);
   const [objectPhoto, setObjectPhoto] = useState(true);
   const [objectFile, setObjectFile] = useState(true);
   const [objectWMS, setObjectWMS] = useState(true);
@@ -338,7 +340,7 @@ const MapScreen = ({ navigation }) => {
 
     const marker = {
       id: searchCoorTemp?.length,
-      coor: { latitude: coors?.latitude, longitude: coors?.longitude },
+      coor: {latitude: coors?.latitude, longitude: coors?.longitude},
     };
     setSearchCoorTemp([...searchCoorTemp, marker]);
 
@@ -378,7 +380,7 @@ const MapScreen = ({ navigation }) => {
 
         setCurrCoor(newPrj);
 
-        const obj = { projection: item };
+        const obj = {projection: item};
         await storeObj(obj);
       } catch (error) {
         console.log(error);
@@ -429,7 +431,7 @@ const MapScreen = ({ navigation }) => {
 
     handleOffMapTool();
     console.log(item);
-    setImgPicker({ id: item.id, path: item.img, photo: [{ uri: item.img }] });
+    setImgPicker({id: item.id, path: item.img, photo: [{uri: item.img}]});
 
     toggleDeleteImg.value = !toggleDeleteImg.value;
   };
@@ -447,7 +449,7 @@ const MapScreen = ({ navigation }) => {
   const handleRemove = async () => {
     try {
       const filterPhoto = photos.filter(item => item.id !== imgPicker.id);
-      const obj = { photos: filterPhoto };
+      const obj = {photos: filterPhoto};
 
       await removeLocalImg(imgPicker.path);
       await storeObj(obj);
@@ -459,13 +461,13 @@ const MapScreen = ({ navigation }) => {
     }
   };
 
-  const handleCloseRemove = () => { };
+  const handleCloseRemove = () => {};
 
   const handleWatchPosition = useCallback(() => {
     setLoading(true);
     return Geolocation.watchPosition(
       position => {
-        let { longitude, latitude, accuracy } = position.coords;
+        let {longitude, latitude, accuracy} = position.coords;
         console.log('watch position', longitude, latitude);
 
         const centerTransformCoor = prjTransform(
@@ -641,7 +643,7 @@ const MapScreen = ({ navigation }) => {
       const newGeo = [...geojson, ...geoSaved];
       setGeojson(newGeo);
 
-      const obj = { geojson: newGeo };
+      const obj = {geojson: newGeo};
       console.log(obj);
       handleOffMapTool();
       await storeObj(obj);
@@ -652,7 +654,7 @@ const MapScreen = ({ navigation }) => {
 
   const finishEditting = () => {
     let undo = [...undoArr];
-    let lastItem = { ...undo[undo?.length - 1] };
+    let lastItem = {...undo[undo?.length - 1]};
     if (lastItem?.properties?.editting) {
       lastItem.properties.editting = false;
 
@@ -676,7 +678,7 @@ const MapScreen = ({ navigation }) => {
       properties: {
         'marker-color': commonColor.pending,
         id: generateID(3),
-        coor: { lat: transformToCurrPrj[1], lon: transformToCurrPrj[0] },
+        coor: {lat: transformToCurrPrj[1], lon: transformToCurrPrj[0]},
         ...commonObj,
       },
       geometry: {
@@ -714,7 +716,7 @@ const MapScreen = ({ navigation }) => {
         },
       };
 
-      return { newLine, checkEditting };
+      return {newLine, checkEditting};
     }
 
     const newLine = {
@@ -732,7 +734,7 @@ const MapScreen = ({ navigation }) => {
       },
     };
 
-    return { newLine, checkEditting };
+    return {newLine, checkEditting};
   };
 
   const addPolygon = (latitude, longitude, isEditting) => {
@@ -762,7 +764,7 @@ const MapScreen = ({ navigation }) => {
         },
       };
 
-      return { newPolygon, checkEditting };
+      return {newPolygon, checkEditting};
     }
 
     const newPolygon = {
@@ -783,7 +785,7 @@ const MapScreen = ({ navigation }) => {
       },
     };
 
-    return { newPolygon, checkEditting };
+    return {newPolygon, checkEditting};
   };
 
   const drawPoint = (x, y) => {
@@ -831,11 +833,11 @@ const MapScreen = ({ navigation }) => {
         break;
       case 'LineString':
         drawLine(longitude, latitude, isEditting);
-        addPointForPolinegon({ latitude, longitude });
+        addPointForPolinegon({latitude, longitude});
         break;
       case 'Polygon':
         drawPolygon(longitude, latitude, isEditting);
-        addPointForPolinegon({ latitude, longitude });
+        addPointForPolinegon({latitude, longitude});
         break;
     }
   };
@@ -847,7 +849,7 @@ const MapScreen = ({ navigation }) => {
   };
 
   const handleLongPressMap = e => {
-    const { latitude, longitude } = e.nativeEvent.coordinate;
+    const {latitude, longitude} = e.nativeEvent.coordinate;
 
     createObject(latitude, longitude, false);
   };
@@ -868,7 +870,7 @@ const MapScreen = ({ navigation }) => {
       markerTemp = markerTemp.slice(0, length);
     } else {
       coorArr.forEach(item => {
-        markerTemp.push({ latitude: item[1], longitude: item[0] });
+        markerTemp.push({latitude: item[1], longitude: item[0]});
       });
     }
 
@@ -879,7 +881,7 @@ const MapScreen = ({ navigation }) => {
     let undoTemp = [...undoArr];
 
     const lastItem = undoTemp.pop();
-    const { coordinates, type } = lastItem.geometry;
+    const {coordinates, type} = lastItem.geometry;
     console.log(coordinates);
 
     if (type != 'Point') {
@@ -925,7 +927,7 @@ const MapScreen = ({ navigation }) => {
     let redoTemp = [...redoArr];
 
     const firstItem = redoTemp.shift();
-    const { coordinates, type } = firstItem.geometry;
+    const {coordinates, type} = firstItem.geometry;
     console.log(coordinates);
 
     if (type != 'Point') {
@@ -959,7 +961,7 @@ const MapScreen = ({ navigation }) => {
           return item;
         });
 
-        const newObj = { geojson: geojsonEdited };
+        const newObj = {geojson: geojsonEdited};
 
         setGeojson(geojsonEdited);
         await storeObj(newObj);
@@ -976,7 +978,7 @@ const MapScreen = ({ navigation }) => {
           item => item.properties.id !== idObj,
         );
 
-        const obj = { geojson: objRemove };
+        const obj = {geojson: objRemove};
         setGeojson(objRemove);
         await storeObj(obj);
       } catch (error) {
@@ -995,7 +997,7 @@ const MapScreen = ({ navigation }) => {
   };
 
   const handleOpenWMS = data => {
-    const { WMSLink, linkRoot, centerPoint, label, value } = data;
+    const {WMSLink, linkRoot, centerPoint, label, value} = data;
 
     setLinkWMS({
       getMapLink: WMSLink,
@@ -1044,12 +1046,13 @@ const MapScreen = ({ navigation }) => {
     const maxX = region?.longitude + region?.longitudeDelta / 2;
     const maxY = region?.latitude + region?.latitudeDelta / 2;
 
-    const getFeatureLink = `${linkWMS?.getFeatureLink
-      }&bbox=${minX},${minY},${maxX},${maxY}&width=${Math.round(
-        mapDimension.width,
-      )}&height=${Math.round(mapDimension.height)}&x=${Math.round(
-        x,
-      )}&y=${Math.round(y)}`;
+    const getFeatureLink = `${
+      linkWMS?.getFeatureLink
+    }&bbox=${minX},${minY},${maxX},${maxY}&width=${Math.round(
+      mapDimension.width,
+    )}&height=${Math.round(mapDimension.height)}&x=${Math.round(
+      x,
+    )}&y=${Math.round(y)}`;
 
     const regionFeatureInfo = await getRegionInfoData(getFeatureLink);
 
@@ -1084,8 +1087,8 @@ const MapScreen = ({ navigation }) => {
   };
 
   const onLayout = event => {
-    const { height, width } = event.nativeEvent.layout;
-    setMapDimension({ width, height });
+    const {height, width} = event.nativeEvent.layout;
+    setMapDimension({width, height});
   };
 
   const displayFileInfo = item => {
@@ -1112,7 +1115,7 @@ const MapScreen = ({ navigation }) => {
     }
   };
 
-  const handleCloseMapSetting = () => { };
+  const handleCloseMapSetting = () => {};
   const handlePickMap = item => {
     setMapType(item.map);
   };
@@ -1120,11 +1123,11 @@ const MapScreen = ({ navigation }) => {
     switch (position) {
       case 0:
         return setObjectDraw(state);
-      // case 1:
-      //   return setObjectPhoto(state);
       case 1:
         return setObjectFile(state);
       case 2:
+        return setObjectFrirePoint(state);
+      case 3:
         return setObjectWMS(state);
     }
   };
@@ -1156,8 +1159,8 @@ const MapScreen = ({ navigation }) => {
     );
 
     return {
-      opacity: withSpring(opacity, { duration: 400 }),
-      bottom: withTiming(bottom, { duration: 400 }),
+      opacity: withSpring(opacity, {duration: 400}),
+      bottom: withTiming(bottom, {duration: 400}),
     };
   });
 
@@ -1176,8 +1179,8 @@ const MapScreen = ({ navigation }) => {
     );
 
     return {
-      opacity: withTiming(opacity, { duration: 333 }),
-      transform: [{ scale: withTiming(scale, { duration: 333 }) }],
+      opacity: withTiming(opacity, {duration: 333}),
+      transform: [{scale: withTiming(scale, {duration: 333})}],
     };
   });
 
@@ -1196,8 +1199,8 @@ const MapScreen = ({ navigation }) => {
     );
 
     return {
-      opacity: withTiming(opacity, { duration: 300 }),
-      transform: [{ scale: withTiming(scale, { duration: 200 }) }],
+      opacity: withTiming(opacity, {duration: 300}),
+      transform: [{scale: withTiming(scale, {duration: 200})}],
     };
   });
 
@@ -1216,8 +1219,8 @@ const MapScreen = ({ navigation }) => {
     );
 
     return {
-      opacity: withSpring(opacity, { duration: 300 }),
-      transform: [{ scale: withTiming(scale, { duration: 200 }) }],
+      opacity: withSpring(opacity, {duration: 300}),
+      transform: [{scale: withTiming(scale, {duration: 200})}],
     };
   });
 
@@ -1235,12 +1238,14 @@ const MapScreen = ({ navigation }) => {
     // />,
   ];
   const iconProjectionData = [
-    <RoundBtn shadow={false}
+    <RoundBtn
+      shadow={false}
       icon={Images.geolocation}
       iconSize={iconSize * 1.7}
       event={handleOpenPrjSys}
     />,
-    <RoundBtn shadow={false}
+    <RoundBtn
+      shadow={false}
       icon={Images.layers}
       iconSize={iconSize * 1.7}
       event={handleOpenMapSetting}
@@ -1295,7 +1300,7 @@ const MapScreen = ({ navigation }) => {
   ];
 
   return (
-    <View style={{ flex: 1, justifyContent: 'space-between' }}>
+    <View style={{flex: 1, justifyContent: 'space-between'}}>
       <View style={styles.container}>
         <MapView
           key={mapRender}
@@ -1315,6 +1320,7 @@ const MapScreen = ({ navigation }) => {
             searchCoorTemp.map((item, index) => {
               return <Marker key={index} coordinate={item?.coor} />;
             })}
+
           {/* {objectPhoto &&
           photos?.length != 0 &&
           photos.map((item, index) => {
@@ -1350,6 +1356,71 @@ const MapScreen = ({ navigation }) => {
               </Marker>
             );
           })} */}
+          {objectFirePoint &&
+            firePoint?.length != 0 &&
+            firePoint?.map((item, index) => {
+              const imgSrc = Images.confirmed_fire_not_forest;
+              switch (item.properties.XACMINH) {
+                case '1':
+                  imgSrc = Images.fire_notconfirmed;
+                  break;
+                case '2':
+                  imgSrc = Images.confirmed_fire_forest;
+                  break;
+                case '3':
+                  imgSrc = Images.confirmed_not_fire;
+                  break;
+              }
+              return (
+                <Marker
+                  key={index}
+                  coordinate={{
+                    latitude: Number(item.geometry.coordinates[1]),
+                    longitude: Number(item.geometry.coordinates[0]),
+                  }}
+                  anchor={{x: 0.5, y: 0.5}}
+                  zIndex={10}
+                  tappable={false}>
+                  <Image
+                    source={imgSrc}
+                    alt="target"
+                    style={{width: 50, height: 50}}
+                    resizeMode="cover"
+                  />
+                  <Callout
+                    style={{padding: 5}}
+                    // onPress={() =>
+                    //   this.props.navigation.navigate("detailFirePoint", {
+                    //     item: marker,
+                    //   })
+                    // }
+                  >
+                    <View style={styles.bubble}>
+                      <View>
+                        <Text style={styles.name}>
+                          Ngày: {item.properties.ACQ_DATE}
+                        </Text>
+                        <Text style={styles.name}>
+                          Giờ: {item.properties.ACQ_TIME}
+                        </Text>
+                        <Text style={styles.name}>
+                          Tên chủ rừng: {item.properties.CHURUNG}
+                        </Text>
+                        <Text style={styles.name}>
+                          Huyện: {item.properties.HUYEN}
+                        </Text>
+                        <Text style={styles.name}>
+                          Xã: {item.properties.XA}
+                        </Text>
+                        <Text style={styles.name}>
+                          Lô: {item.properties.LO}
+                        </Text>
+                      </View>
+                    </View>
+                  </Callout>
+                </Marker>
+              );
+            })}
           {linegonMarker?.length != 0 &&
             linegonMarker?.map((item, index) => {
               return (
@@ -1361,7 +1432,7 @@ const MapScreen = ({ navigation }) => {
                   }}
                   // anchor={{ x: 0.5, y: 0.5 }}
                   tappable={false}>
-                  <Image source={Images.pin} style={{ width: 18, height: 18 }} />
+                  <Image source={Images.pin} style={{width: 18, height: 18}} />
                 </Marker>
               );
             })}
@@ -1438,7 +1509,7 @@ const MapScreen = ({ navigation }) => {
             toolOnStyle,
           ]}
           pointerEvents={toggleTool.value ? 'none' : 'auto'}>
-          <View style={{ alignItems: 'flex-start' }}>
+          <View style={{alignItems: 'flex-start'}}>
             <BackBtn2
               iconSize={iconSize}
               event={handleBack}
@@ -1451,9 +1522,10 @@ const MapScreen = ({ navigation }) => {
                 style={[
                   toggleBtnStyle,
                   StyleSheet.absoluteFill,
-                  { alignItems: 'flex-start' },
+                  {alignItems: 'flex-start'},
                 ]}>
-                <RoundBtn shadow={false}
+                <RoundBtn
+                  shadow={false}
                   icon={Images.maximize}
                   iconColor={Colors.WHITE}
                   iconSize={30}
@@ -1463,9 +1535,11 @@ const MapScreen = ({ navigation }) => {
 
               <Animated.View
                 style={[styles.coorInfoContainer, locationInfoStyle]}>
-                <View style={[rowAlignCenter, { justifyContent: 'space-between' }]}>
+                <View
+                  style={[rowAlignCenter, {justifyContent: 'space-between'}]}>
                   <Text style={styles.titleInfoText}>{currPrj?.zone}</Text>
-                  <RoundBtn shadow={false}
+                  <RoundBtn
+                    shadow={false}
                     icon={Images.down}
                     bdRadius={50}
                     iconColor={Colors.WHITE}
@@ -1506,10 +1580,11 @@ const MapScreen = ({ navigation }) => {
             toolOnStyle,
           ]}
           pointerEvents={toggleTool.value ? 'none' : 'auto'}>
-          <View style={{ alignItems: 'flex-end' }}>
+          <View style={{alignItems: 'flex-end'}}>
             <StaggerCustom
               mainIcon={
-                <RoundBtn shadow={false}
+                <RoundBtn
+                  shadow={false}
                   icon={Images.setting}
                   iconSize={iconSize + 3}
                   iconColor={Colors.WHITE}
@@ -1525,7 +1600,11 @@ const MapScreen = ({ navigation }) => {
 
             <StaggerCustom
               mainIcon={
-                <RoundBtn shadow={false} icon={Images.photos} iconSize={iconSize + 23} />
+                <RoundBtn
+                  shadow={false}
+                  icon={Images.photos}
+                  iconSize={iconSize + 23}
+                />
               }
               iconData={iconPhotoData}
               placement={'left'}
@@ -1544,16 +1623,17 @@ const MapScreen = ({ navigation }) => {
             toolOnStyle,
           ]}
           pointerEvents={toggleTool.value ? 'none' : 'auto'}>
-          <View style={{ alignItems: 'flex-end' }}>
-
-            <RoundBtn shadow={false}
+          <View style={{alignItems: 'flex-end'}}>
+            <RoundBtn
+              shadow={false}
               icon={Images.gps}
               iconSize={iconSize * 2}
               event={handleOpenCoorModal}
               mBottom={btnSpace}
             />
 
-            <RoundBtn shadow={false}
+            <RoundBtn
+              shadow={false}
               icon={Images.userLocation}
               iconSize={iconSize * 2}
               event={handleZoomUserLocation}
@@ -1566,7 +1646,8 @@ const MapScreen = ({ navigation }) => {
           <Image source={Images.focus} style={styles.focusImg} />
         </View>
 
-        <View style={{ position: 'absolute', left: wp('3.6%'), bottom: hp('4%') }}>
+        <View
+          style={{position: 'absolute', left: wp('3.6%'), bottom: hp('4%')}}>
           <StaggerCustom
             mainIcon={
               <RoundBtn
@@ -1588,7 +1669,7 @@ const MapScreen = ({ navigation }) => {
           {toolMode?.name == 'LineString' && (
             <Text style={styles.txtInfoDraw}>
               Khoảng cách:{' '}
-              <Text style={{ fontWeight: 'bold', color: Colors.DEFAULT_BLUE }}>
+              <Text style={{fontWeight: 'bold', color: Colors.DEFAULT_BLUE}}>
                 {Math.round(distanceCur)}
               </Text>{' '}
               m
@@ -1597,7 +1678,7 @@ const MapScreen = ({ navigation }) => {
           {toolMode?.name == 'Polygon' && (
             <Text style={styles.txtInfoDraw}>
               Diện tích:{' '}
-              <Text style={{ fontWeight: 'bold', color: Colors.DEFAULT_BLUE }}>
+              <Text style={{fontWeight: 'bold', color: Colors.DEFAULT_BLUE}}>
                 {areaCur}
               </Text>{' '}
               Ha
@@ -1607,9 +1688,14 @@ const MapScreen = ({ navigation }) => {
 
         <Animated.View style={[styles.edittingContainer, toolContainerStyle]}>
           <View
-            style={[rowAlignCenter, { justifyContent: 'space-around', flex: 1 }]}>
-            <RoundBtn shadow={false} icon={Images.miniClose} event={handleOffMapTool} />
-            <RoundBtn shadow={false}
+            style={[rowAlignCenter, {justifyContent: 'space-around', flex: 1}]}>
+            <RoundBtn
+              shadow={false}
+              icon={Images.miniClose}
+              event={handleOffMapTool}
+            />
+            <RoundBtn
+              shadow={false}
               icon={Images.undo}
               event={handleUndo}
               disabled={checkGPSMode() ? true : undoArr?.length == 0}
@@ -1619,7 +1705,8 @@ const MapScreen = ({ navigation }) => {
                   : Colors.DEFAULT_GREY
               }
             />
-            <RoundBtn shadow={false}
+            <RoundBtn
+              shadow={false}
               icon={Images.redo}
               event={handleRedo}
               disabled={checkGPSMode() ? true : redoArr?.length == 0}
@@ -1629,7 +1716,8 @@ const MapScreen = ({ navigation }) => {
                   : Colors.DEFAULT_GREY
               }
             />
-            <RoundBtn shadow={false}
+            <RoundBtn
+              shadow={false}
               icon={Images.targetLocation}
               event={targetUserLocation}
               disabled={checkGPSMode()}
@@ -1637,10 +1725,15 @@ const MapScreen = ({ navigation }) => {
                 checkGPSMode() ? Colors.DEFAULT_GREY : Colors.DEFAULT_BLACK
               }
             />
-            <RoundBtn shadow={false} icon={Images.save} event={handleSaveGeojson} />
+            <RoundBtn
+              shadow={false}
+              icon={Images.save}
+              event={handleSaveGeojson}
+            />
 
             {toolMode && (
-              <RoundBtn shadow={false}
+              <RoundBtn
+                shadow={false}
                 icon={toolMode.img}
                 btnColor={
                   checkGPSMode() ? Colors.GOOGLE_BLUE : Colors.DEFAULT_GREEN
@@ -1706,12 +1799,10 @@ const MapScreen = ({ navigation }) => {
             ref={removeRef}
             deleteText={'ảnh'}
             onCancel={handleCloseRemove}
-            prjInfo={{ prjName: imgPicker?.id }}
+            prjInfo={{prjName: imgPicker?.id}}
             onRemove={handleRemove}
           />
         )}
-
-
 
         {/* {propsPicker && (
         <FileFieldDetails
@@ -1725,7 +1816,7 @@ const MapScreen = ({ navigation }) => {
           ref={mapSettingRef}
           data={mapbase}
           objectDraw={objectDraw}
-          // objectPhoto={objectPhoto}
+          objectFirePoint={objectFirePoint}
           objectFile={objectFile}
           objectWMS={objectWMS}
           onClose={handleCloseMapSetting}
@@ -1792,7 +1883,11 @@ const MapScreen = ({ navigation }) => {
           <RoundBtn
             icon={Images.fire_point}
             iconSize={iconSize * 1.5}
-            event={() => navigation.navigate('ListFirePoint', { title: 'Danh sách điểm cháy' })}
+            event={() =>
+              navigation.navigate('ListFirePoint', {
+                title: 'Danh sách điểm cháy',
+              })
+            }
             mBottom={Dimension.boxHeight(3)}
             shadow={false}
           />
@@ -1825,7 +1920,6 @@ const MapScreen = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -1833,7 +1927,7 @@ const styles = StyleSheet.create({
 
   mapContainer: {
     ...StyleSheet.absoluteFillObject,
-    flex: 1
+    flex: 1,
   },
 
   headerBtnContainer: {
@@ -1932,7 +2026,18 @@ const styles = StyleSheet.create({
   },
   textIcon: {
     ...fontDefault,
-  }
+  },
+  bubble: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    width: 150,
+  },
+  name: {
+    fontSize: 10,
+    marginBottom: 2,
+    marginLeft: 10,
+    ...fontDefault,
+  },
 });
 
 export default MapScreen;
